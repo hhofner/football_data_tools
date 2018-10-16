@@ -4,7 +4,7 @@ Created on Fri Sep 21 18:59:53 2018
 
 @author: h_hof
 
-Web Scraping Transfermarkt for ManCity v Cardiff City
+Web Scraping Transfermarkt for Man
 """
 
 import requests
