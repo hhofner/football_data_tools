@@ -11,6 +11,12 @@ import requests
 from bs4 import BeautifulSoup
 
 import pandas as pd
+import os
+
+team_name = 'fc-bayern-munchen'
+
+# Kader URL 
+url_temp = 'https://www.transfermarkt.de/fc-bayern-munchen/kader/verein/27/plus/0/galerie/0?saison_id=20'
 
 # Header variable not to be blocked as scraping tool
 headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'}
@@ -32,6 +38,10 @@ def convertValueStringToInteger(value_string):
         return value
 
 def getPlayerValues(page, headers):
+    '''
+        Retrieves the players value and returns a 
+        Pandas DataFrame
+    '''
     pageTree = requests.get(page, headers=headers)
     pageSoup = BeautifulSoup(pageTree.content, 'html.parser')
 
@@ -41,12 +51,6 @@ def getPlayerValues(page, headers):
 
     PlayersList = []
     ValuesList = []
-
-    # TODO: assert len(Players) == len(Values), 'Non-matching Players and Values sizes'
-
-#    for i in range(len(Players)):
-#        PlayersList.append(Players[i].text)
-#        ValuesList.append(Values[i].text)
 
     i=0;j=0
     while(j<len(Values)):
@@ -63,12 +67,16 @@ def getPlayerValues(page, headers):
 
 
 if __name__ == '__main__':
-    # Cardiff City
-    cardiff_city_url = 'https://www.transfermarkt.de/cardiff-city/kader/verein/603'
-    cardiffcity_df   = getPlayerValues(cardiff_city_url, headers)
-    print(cardiffcity_df.head())
-
-    # Man City
-    man_city_url = 'https://www.transfermarkt.de/manchester-city/kader/verein/281'
-    mancity_df = getPlayerValues(man_city_url, headers)
-    print(mancity_df.head())
+    cwd = os.getcwd()
+    data_dir = os.path.join(cwd, 'data')
+    values_dir = os.path.join(data_dir, 'values')
+    for i in range(8,19):
+        if len(str(i)) == 1:
+            num = '0' + str(i)
+        else:
+            num = str(i)
+        url = url_temp + num
+        df = getPlayerValues(url, headers)
+        
+        new_dir = os.path.join(values_dir, team_name+'_20' + num + '.csv')
+        df.to_csv(new_dir)
