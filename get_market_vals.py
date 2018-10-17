@@ -13,10 +13,18 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import os
 
-team_name = 'fc-bayern-munchen'
+#team_name = 'fc-bayern-munchen'
+#team_name = 'manchester-city'
+#team_name = 'chelsea-fc'
+#team_name = 'arsenal-fc'
+team_name = '1fc-koln'
 
 # Kader URL 
-url_temp = 'https://www.transfermarkt.de/fc-bayern-munchen/kader/verein/27/plus/0/galerie/0?saison_id=20'
+#url_temp = 'https://www.transfermarkt.de/fc-bayern-munchen/kader/verein/27/plus/0/galerie/0?saison_id=20'
+#url_temp = 'https://www.transfermarkt.de/manchester-city/startseite/verein/281?saison_id=20'
+#url_temp = 'https://www.transfermarkt.de/fc-chelsea/startseite/verein/631?saison_id=20'
+#url_temp = 'https://www.transfermarkt.de/fc-arsenal/startseite/verein/11?saison_id=20'
+url_temp = 'https://www.transfermarkt.de/1-fc-koln/startseite/verein/3?saison_id=2018'
 
 # Header variable not to be blocked as scraping tool
 headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'}
