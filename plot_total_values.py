@@ -22,9 +22,7 @@ for file_name in os.listdir(values_dir):
     if team in file_name:
         file_path = os.path.join(values_dir, file_name)
         year = file_name[-8:-4]
-        print('file_name[-8:-4] = ', file_name[-8:-4])
         years.append(int(year))
-        print(years)
         with open(file_path) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
             line_count = 0
