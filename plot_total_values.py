@@ -34,12 +34,11 @@ for file_name in os.listdir(values_dir):
                     try:
                         val = float(row[2])
                         total += val
-                        line_count+=1
                     except ValueError:
                         print('Cant convert %s value: %s to float' % (row[1], row[2]))
                         val = 0
                         total += val
-                        line_count+=1
+                    line_count+=1
             total_values.append(total)
                         
 print('Processed') 
