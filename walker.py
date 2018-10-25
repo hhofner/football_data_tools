@@ -9,18 +9,25 @@ import csv
 
 class Walker(object):
     '''
-    Walker object to parse the data collected and return 
+    Walker object to parse the data collected and return
     '''
     def __init__(self):
         self.data_dir   = os.path.join(os.getcwd(), 'data')
-        self.values_dir = os.path.join(self.data_dir, 'values') 
-    
-    def fetch_total_value(self, team, year='0000', path='0000'):
+        self.values_dir = os.path.join(self.data_dir, 'values')
+
+    def fetch_total_value(self, team, year='0000', path='0000', verbose=False):
         '''
         Fetches the total market value of a team for specified year. If no year
         is specified, then the '0000' is used indicating all years in the values
         directory.
+
+        Returns:
+        type tuple: (years, values)
+        type list OR float: years
+        type list OR int: values
         '''
+        verboseprint = print if verbose else lambda *a, **k: None
+            
         if path=='0000':
             path = self.values_dir
         if not os.path.exists(path):
@@ -33,19 +40,21 @@ class Walker(object):
                     file_path = os.path.join(path, file_name)
                     year = file_name[-8:-4]
                     years.append(int(year))
-                    with open(file_path) as csv_file:
+                    verboseprint('Opening file: %s' % file_name)
+                    with open(file_path, encoding='utf-8') as csv_file:
                         csv_reader = csv.reader(csv_file, delimiter=',')
                         line_count = 0
-                        total = 0 
+                        total = 0
                         for row in csv_reader:
                             if line_count == 0:
                                 line_count += 1
                             else:
                                 try:
+                                    verboseprint('Handling data: %s' % row[2])
                                     val = float(row[2])
                                     total += val
                                 except ValueError:
-                                    print('Cant convert %s value: %s to float' % (row[1], row[2]))
+                                    verboseprint('Cant convert %s value: %s to float' % (row[1], row[2]))
                                     val = 0
                                     total += val
                                 line_count+=1
@@ -61,7 +70,7 @@ class Walker(object):
             for file_name in os.listdir(path):
                 if (team in file_name) and (str(year) in file_name):
                     file_path = os.path.join(path, file_name)
-                    with open(file_path) as csv_file:
+                    with open(file_path, 'r', encoding='utf-8') as csv_file:
                         csv_reader = csv.reader(csv_file, delimiter=',')
                         line_count = 0
                         total = 0
@@ -81,10 +90,10 @@ class Walker(object):
                     break
             # Double check the values and years have same length
             if len(years) != len(values):
-                raise Exception('Years: {{%s}} and values: {{%s}} need to have same' 
+                raise Exception('Years: {{%s}} and values: {{%s}} need to have same'
                                 'length' % (years, values))
             return (years, values)
-        
+
 if __name__ == '__main__':
     # Testing
     walker = Walker()
